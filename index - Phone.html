@@ -1,0 +1,3359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhoneFinder Pro - Tu Comparador de Móviles Inteligente</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="https://png.pngtree.com/png-vector/20240524/ourlarge/pngtree-an-icon-of-a-colorful-cell-phone-vector-png-image_6922391.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .smart-finder {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .smart-finder h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .finder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .finder-section {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .finder-section:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .finder-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e0e6ed;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-item:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin: 0;
+        }
+
+        .checkbox-item.checked {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .price-range {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .price-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #e0e6ed;
+        }
+
+        .price-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .price-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e0e6ed;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .price-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .find-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .find-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .filters-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9rem;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 12px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .phones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .phone-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .phone-card:hover::before {
+            left: 100%;
+        }
+
+        .phone-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+        }
+
+        .phone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .phone-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .phone-brand {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .phone-price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ff6b6b;
+            text-align: right;
+        }
+
+        .phone-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .spec-item i {
+            color: #667eea;
+            width: 16px;
+        }
+
+        .phone-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .highlight-tag {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .phone-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .recommendation-card {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            border: none;
+            color: #333;
+        }
+
+        .recommendation-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff6b6b;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .finder-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .phones-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .phone-specs {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4ecdc4;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+        @keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+    </style>
+</head>
+<div id="popup-warning" style="
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff6b6b;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: fadeInOut 15s ease-in-out forwards;
+">
+  Los precios son aproximados y pueden variar segun el comercio. Por favor, infórmate bien antes de tomar decisiones. No nos hacemos responsables.
+</div>
+
+<script>
+  window.onload = function () {
+    const popup = document.getElementById("popup-warning");
+    popup.style.display = "block";
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 15000); // 15 segundos
+  };
+</script>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-mobile-alt"></i> PhoneFinder Pro</h1>
+            <p>Encuentra el teléfono perfecto para ti con Filtrado Inteligente</p>
+        </div>
+
+        <div class="smart-finder">
+            <h2><i class="fas fa-brain"></i> Buscador Inteligente</h2>
+            <div class="finder-grid">
+                <div class="finder-section">
+                    <h3><i class="fas fa-star"></i> ¿Qué es más importante para ti?</h3>
+                    <div class="checkbox-group" id="priorities">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="camera" value="camera">
+                            <label for="camera">Buena Cámara</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="battery" value="battery">
+                            <label for="battery">Batería Duradera</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="performance" value="performance">
+                            <label for="performance">Alto Rendimiento</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="storage" value="storage">
+                            <label for="storage">Mucho Almacenamiento</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="display" value="display">
+                            <label for="display">Pantalla de Calidad</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fastcharge" value="fastcharge">
+                            <label for="fastcharge">Carga Rápida</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="finder-section">
+                    <h3><i class="fas fa-dollar-sign"></i> Presupuesto Máximo</h3>
+                    <div class="price-range">
+                        <div class="price-input">
+                            <i class="fas fa-coins"></i>
+                            <input type="number" id="maxBudget" placeholder="1000000" min="100000" max="5000000" step="50000">
+                            <span>COP</span>
+                        </div>
+                        <input type="range" class="price-slider" id="budgetSlider" min="100000" max="5000000" step="50000" value="1000000">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #666;">
+                            <span>$100K</span>
+                            <span>$5M</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="find-btn" onclick="findSmartRecommendations()">
+                <i class="fas fa-search"></i>
+                Encontrar Mi Teléfono Ideal
+            </button>
+        </div>
+
+        <div class="filters-section">
+            <h2><i class="fas fa-filter"></i> Filtros Avanzados</h2>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label for="brandFilter">Marca</label>
+                    <select id="brandFilter">
+                        <option value="">Todas las marcas</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="Apple">Apple</option>
+                        <option value="Xiaomi">Xiaomi</option>
+                        <option value="Google">Google</option>
+                        <option value="OnePlus">OnePlus</option>
+                        <option value="Oppo">Oppo</option>
+                        <option value="Realme">Realme</option>
+                        <option value="Poco">Poco</option>
+                        <option value="Tecno">Tecno</option>
+                        <option value="Motorola">Motorola</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="priceMinFilter">Precio Mínimo</label>
+                    <input type="number" id="priceMinFilter" placeholder="100000" min="0" step="50000">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="priceMaxFilter">Precio Máximo</label>
+                    <input type="number" id="priceMaxFilter" placeholder="5000000" min="0" step="50000">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="storageFilter">Almacenamiento</label>
+                    <select id="storageFilter">
+                        <option value="">Cualquier capacidad</option>
+                        <option value="64">64GB+</option>
+                        <option value="128">128GB+</option>
+                        <option value="256">256GB+</option>
+                        <option value="512">512GB+</option>
+                        <option value="1024">1TB+</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="ramFilter">Memoria RAM</label>
+                    <select id="ramFilter">
+                        <option value="">Cualquier RAM</option>
+                        <option value="4">4GB+</option>
+                        <option value="6">6GB+</option>
+                        <option value="8">8GB+</option>
+                        <option value="12">12GB+</option>
+                        <option value="16">16GB+</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="yearFilter">Año de Lanzamiento</label>
+                    <select id="yearFilter">
+                        <option value="">Cualquier año</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="batteryFilter">Batería mínima (mAh)</label>
+                    <input type="number" id="batteryFilter" placeholder="3000" min="1000" max="10000" step="500">
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="applyFilters()" style="flex: 1;">
+                    <i class="fas fa-search"></i> Aplicar Filtros
+                </button>
+                <button class="btn btn-secondary" onclick="clearFilters()" style="flex: 1;">
+                    <i class="fas fa-times"></i> Limpiar Filtros
+                </button>
+            </div>
+        </div>
+
+        <div id="phonesContainer">
+            <div class="loading">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Base de datos de teléfonos (simulada)
+        const phonesDB = [
+    // SAMSUNG
+    {
+        id: 1,
+        brand: "Samsung",
+        name: "Galaxy S25 Ultra",
+        price: 5200000,
+        storage: 256,
+        ram: 12,
+        battery: 5000,
+        camera: 200,
+        os: "Android 15",
+        year: 2025,
+        fastCharge: 45,
+        display: "6.8\" Dynamic AMOLED 2X",
+        highlights: ["S Pen integrado", "Snapdragon 8 Elite", "AI mejorada"],
+        specs: {
+            processor: "Snapdragon 8 Elite",
+            display: "6.8\" AMOLED 120Hz",
+            camera: "200MP + 50MP + 10MP + 10MP",
+            video: "8K ProRes",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 2,
+        brand: "Samsung",
+        name: "Galaxy S25 Plus",
+        price: 4200000,
+        storage: 256,
+        ram: 12,
+        battery: 4900,
+        camera: 50,
+        os: "Android 15",
+        year: 2025,
+        fastCharge: 45,
+        display: "6.7\" Dynamic AMOLED 2X",
+        highlights: ["Snapdragon 8 Elite", "AI avanzada", "Diseño premium"],
+        specs: {
+            processor: "Snapdragon 8 Elite",
+            display: "6.7\" AMOLED 120Hz",
+            camera: "50MP + 12MP + 10MP",
+            video: "8K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 3,
+        brand: "Samsung",
+        name: "Galaxy S25",
+        price: 3500000,
+        storage: 128,
+        ram: 8,
+        battery: 4000,
+        camera: 50,
+        os: "Android 15",
+        year: 2025,
+        fastCharge: 25,
+        display: "6.2\" Dynamic AMOLED 2X",
+        highlights: ["Snapdragon 8 Elite", "Compacto", "AI features"],
+        specs: {
+            processor: "Snapdragon 8 Elite",
+            display: "6.2\" AMOLED 120Hz",
+            camera: "50MP + 12MP + 10MP",
+            video: "8K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 4,
+        brand: "Samsung",
+        name: "Galaxy S24 Ultra",
+        price: 4800000,
+        storage: 256,
+        ram: 12,
+        battery: 5000,
+        camera: 200,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 45,
+        display: "6.8\" Dynamic AMOLED 2X",
+        highlights: ["S Pen", "Titanio", "Galaxy AI"],
+        specs: {
+            processor: "Snapdragon 8 Gen 3",
+            display: "6.8\" AMOLED 120Hz",
+            camera: "200MP + 50MP + 10MP + 10MP",
+            video: "8K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 5,
+        brand: "Samsung",
+        name: "Galaxy A55 5G",
+        price: 1800000,
+        storage: 128,
+        ram: 8,
+        battery: 5000,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 25,
+        display: "6.6\" Super AMOLED",
+        highlights: ["Exynos 1480", "Resistente", "Económico"],
+        specs: {
+            processor: "Exynos 1480",
+            display: "6.6\" AMOLED 120Hz",
+            camera: "50MP + 12MP + 5MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // APPLE
+    {
+        id: 6,
+        brand: "Apple",
+        name: "iPhone 16 Pro Max",
+        price: 5500000,
+        storage: 256,
+        ram: 8,
+        battery: 4650,
+        camera: 48,
+        os: "iOS 18",
+        year: 2024,
+        fastCharge: 30,
+        display: "6.9\" Super Retina XDR",
+        highlights: ["A18 Pro", "Control de Cámara", "Titanio"],
+        specs: {
+            processor: "A18 Pro",
+            display: "6.9\" OLED ProMotion",
+            camera: "48MP + 48MP + 12MP",
+            video: "4K ProRes",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 7,
+        brand: "Apple",
+        name: "iPhone 16 Pro",
+        price: 4900000,
+        storage: 128,
+        ram: 8,
+        battery: 3582,
+        camera: 48,
+        os: "iOS 18",
+        year: 2024,
+        fastCharge: 30,
+        display: "6.3\" Super Retina XDR",
+        highlights: ["A18 Pro", "Control de Cámara", "Titanio"],
+        specs: {
+            processor: "A18 Pro",
+            display: "6.3\" OLED ProMotion",
+            camera: "48MP + 48MP + 12MP",
+            video: "4K ProRes",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 8,
+        brand: "Apple",
+        name: "iPhone 16 Plus",
+        price: 4200000,
+        storage: 128,
+        ram: 8,
+        battery: 4674,
+        camera: 48,
+        os: "iOS 18",
+        year: 2024,
+        fastCharge: 30,
+        display: "6.7\" Super Retina XDR",
+        highlights: ["A18", "Control de Cámara", "Botón Acción"],
+        specs: {
+            processor: "A18",
+            display: "6.7\" OLED",
+            camera: "48MP + 12MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 9,
+        brand: "Apple",
+        name: "iPhone 16",
+        price: 3800000,
+        storage: 128,
+        ram: 8,
+        battery: 3561,
+        camera: 48,
+        os: "iOS 18",
+        year: 2024,
+        fastCharge: 30,
+        display: "6.1\" Super Retina XDR",
+        highlights: ["A18", "Control de Cámara", "Botón Acción"],
+        specs: {
+            processor: "A18",
+            display: "6.1\" OLED",
+            camera: "48MP + 12MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // XIAOMI
+    {
+        id: 10,
+        brand: "Xiaomi",
+        name: "Xiaomi 15 Ultra",
+        price: 4500000,
+        storage: 512,
+        ram: 16,
+        battery: 6000,
+        camera: 50,
+        os: "Android 15",
+        year: 2025,
+        fastCharge: 90,
+        display: "6.73\" AMOLED",
+        highlights: ["Snapdragon 8 Elite", "Leica", "Carga ultra rápida"],
+        specs: {
+            processor: "Snapdragon 8 Elite",
+            display: "6.73\" AMOLED 120Hz",
+            camera: "50MP + 50MP + 50MP + 50MP",
+            video: "8K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 11,
+        brand: "Xiaomi",
+        name: "Xiaomi 15",
+        price: 3200000,
+        storage: 256,
+        ram: 12,
+        battery: 4800,
+        camera: 50,
+        os: "Android 15",
+        year: 2024,
+        fastCharge: 90,
+        display: "6.36\" AMOLED",
+        highlights: ["Snapdragon 8 Elite", "Leica", "Compacto"],
+        specs: {
+            processor: "Snapdragon 8 Elite",
+            display: "6.36\" AMOLED 120Hz",
+            camera: "50MP + 50MP + 50MP",
+            video: "8K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 12,
+        brand: "Xiaomi",
+        name: "Redmi Note 13 Pro",
+        price: 1200000,
+        storage: 256,
+        ram: 8,
+        battery: 5100,
+        camera: 200,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 67,
+        display: "6.67\" AMOLED",
+        highlights: ["MediaTek Helio G99", "200MP", "Económico"],
+        specs: {
+            processor: "MediaTek Helio G99",
+            display: "6.67\" AMOLED 120Hz",
+            camera: "200MP + 8MP + 2MP",
+            video: "4K",
+            connectivity: "4G"
+        }
+    },
+
+    // GOOGLE
+    {
+        id: 13,
+        brand: "Google",
+        name: "Pixel 9 Pro XL",
+        price: 4100000,
+        storage: 128,
+        ram: 16,
+        battery: 5060,
+        camera: 50,
+        os: "Android 15",
+        year: 2024,
+        fastCharge: 37,
+        display: "6.8\" LTPO OLED",
+        highlights: ["Tensor G4", "AI avanzada", "7 años de updates"],
+        specs: {
+            processor: "Google Tensor G4",
+            display: "6.8\" LTPO OLED 120Hz",
+            camera: "50MP + 48MP + 48MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 14,
+        brand: "Google",
+        name: "Pixel 9 Pro",
+        price: 3700000,
+        storage: 128,
+        ram: 16,
+        battery: 4700,
+        camera: 50,
+        os: "Android 15",
+        year: 2024,
+        fastCharge: 37,
+        display: "6.3\" LTPO OLED",
+        highlights: ["Tensor G4", "AI Magic", "Compacto"],
+        specs: {
+            processor: "Google Tensor G4",
+            display: "6.3\" LTPO OLED 120Hz",
+            camera: "50MP + 48MP + 48MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 15,
+        brand: "Google",
+        name: "Pixel 9",
+        price: 2900000,
+        storage: 128,
+        ram: 12,
+        battery: 4700,
+        camera: 50,
+        os: "Android 15",
+        year: 2024,
+        fastCharge: 37,
+        display: "6.3\" OLED",
+        highlights: ["Tensor G4", "AI integrada", "Actualizaciones"],
+        specs: {
+            processor: "Google Tensor G4",
+            display: "6.3\" OLED 120Hz",
+            camera: "50MP + 48MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // Poco
+    {
+        id: 16,
+        brand: "Poco",
+        name: "Poco X7 Pro",
+        price: 1400000,
+        storage: 256,
+        ram: 8,
+        battery: 6000,
+        camera: 64,
+        os: "Android 15",
+        year: 2025,
+        fastCharge: 90,
+        display: "6.67\" AMOLED",
+        highlights: ["MediaTek Dimensity 8400", "Carga rápida", "Gaming"],
+        specs: {
+            processor: "MediaTek Dimensity 8400",
+            display: "6.67\" AMOLED 120Hz",
+            camera: "64MP + 8MP + 2MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 17,
+        brand: "Poco",
+        name: "Poco F6 Pro",
+        price: 2100000,
+        storage: 256,
+        ram: 12,
+        battery: 5000,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 120,
+        display: "6.67\" AMOLED",
+        highlights: ["Snapdragon 8 Gen 2", "120W", "Gaming flagship"],
+        specs: {
+            processor: "Snapdragon 8 Gen 2",
+            display: "6.67\" AMOLED 120Hz",
+            camera: "50MP + 8MP + 2MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // ONEPLUS
+    {
+        id: 18,
+        brand: "OnePlus",
+        name: "OnePlus 13",
+        price: 3800000,
+        storage: 256,
+        ram: 12,
+        battery: 6000,
+        camera: 50,
+        os: "Android 15",
+        year: 2024,
+        fastCharge: 100,
+        display: "6.82\" LTPO AMOLED",
+        highlights: ["Snapdragon 8 Elite", "Hasselblad", "OxygenOS 15"],
+        specs: {
+            processor: "Snapdragon 8 Elite",
+            display: "6.82\" LTPO AMOLED 120Hz",
+            camera: "50MP + 50MP + 50MP",
+            video: "8K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 19,
+        brand: "OnePlus",
+        name: "OnePlus 13R",
+        price: 2800000,
+        storage: 256,
+        ram: 12,
+        battery: 6000,
+        camera: 50,
+        os: "Android 15",
+        year: 2025,
+        fastCharge: 80,
+        display: "6.78\" LTPO AMOLED",
+        highlights: ["Snapdragon 8 Gen 3", "Carga rápida", "Valor"],
+        specs: {
+            processor: "Snapdragon 8 Gen 3",
+            display: "6.78\" LTPO AMOLED 120Hz",
+            camera: "50MP + 8MP + 2MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 20,
+        brand: "OnePlus",
+        name: "OnePlus Open",
+        price: 6200000,
+        storage: 512,
+        ram: 16,
+        battery: 4805,
+        camera: 48,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 67,
+        display: "7.82\" LTPO3 AMOLED",
+        highlights: ["Plegable", "Snapdragon 8 Gen 2", "Hasselblad"],
+        specs: {
+            processor: "Snapdragon 8 Gen 2",
+            display: "7.82\" Plegable AMOLED 120Hz",
+            camera: "48MP + 64MP + 48MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // Oppo
+    {
+        id: 21,
+        brand: "Oppo",
+        name: "Find X8 Pro",
+        price: 4200000,
+        storage: 512,
+        ram: 16,
+        battery: 5910,
+        camera: 50,
+        os: "Android 15",
+        year: 2024,
+        fastCharge: 80,
+        display: "6.78\" LTPO AMOLED",
+        highlights: ["Dimensity 9400", "Hasselblad", "Batería grande"],
+        specs: {
+            processor: "MediaTek Dimensity 9400",
+            display: "6.78\" LTPO AMOLED 120Hz",
+            camera: "50MP + 50MP + 50MP + 50MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 22,
+        brand: "Oppo",
+        name: "Reno12 Pro",
+        price: 2100000,
+        storage: 256,
+        ram: 12,
+        battery: 5000,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 80,
+        display: "6.7\" AMOLED",
+        highlights: ["Dimensity 7300", "AI Portrait", "Delgado"],
+        specs: {
+            processor: "MediaTek Dimensity 7300",
+            display: "6.7\" AMOLED 120Hz",
+            camera: "50MP + 8MP + 50MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // REALME
+    {
+        id: 23,
+        brand: "Realme",
+        name: "GT 7 Pro",
+        price: 2800000,
+        storage: 256,
+        ram: 12,
+        battery: 6500,
+        camera: 50,
+        os: "Android 15",
+        year: 2024,
+        fastCharge: 120,
+        display: "6.78\" LTPO AMOLED",
+        highlights: ["Snapdragon 8 Elite", "6500mAh", "120W"],
+        specs: {
+            processor: "Snapdragon 8 Elite",
+            display: "6.78\" LTPO AMOLED 120Hz",
+            camera: "50MP + 8MP + 50MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 24,
+        brand: "Realme",
+        name: "12 Pro Plus",
+        price: 1600000,
+        storage: 256,
+        ram: 8,
+        battery: 5000,
+        camera: 64,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 67,
+        display: "6.7\" AMOLED",
+        highlights: ["Snapdragon 7s Gen 2", "Telescópico", "Valor"],
+        specs: {
+            processor: "Snapdragon 7s Gen 2",
+            display: "6.7\" AMOLED 120Hz",
+            camera: "64MP + 50MP + 8MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // MOTOROLA
+    {
+        id: 25,
+        brand: "Motorola",
+        name: "Edge 50 Ultra",
+        price: 3200000,
+        storage: 512,
+        ram: 16,
+        battery: 4500,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 125,
+        display: "6.7\" pOLED",
+        highlights: ["Snapdragon 8s Gen 3", "Pantone", "125W"],
+        specs: {
+            processor: "Snapdragon 8s Gen 3",
+            display: "6.7\" pOLED 144Hz",
+            camera: "50MP + 50MP + 64MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 26,
+        brand: "Motorola",
+        name: "Razr 50 Ultra",
+        price: 4800000,
+        storage: 512,
+        ram: 12,
+        battery: 4000,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 45,
+        display: "6.9\" pOLED Plegable",
+        highlights: ["Snapdragon 8s Gen 3", "Plegable", "Pantalla externa"],
+        specs: {
+            processor: "Snapdragon 8s Gen 3",
+            display: "6.9\" pOLED Plegable 165Hz",
+            camera: "50MP + 50MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // HUAWEI
+    {
+        id: 27,
+        brand: "Huawei",
+        name: "Pura 70 Ultra",
+        price: 4500000,
+        storage: 512,
+        ram: 16,
+        battery: 5200,
+        camera: 50,
+        os: "HarmonyOS 4.2",
+        year: 2024,
+        fastCharge: 100,
+        display: "6.8\" LTPO OLED",
+        highlights: ["Kirin 9010", "Leica", "Sin Google"],
+        specs: {
+            processor: "Kirin 9010",
+            display: "6.8\" LTPO OLED 120Hz",
+            camera: "50MP + 40MP + 50MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 28,
+        brand: "Huawei",
+        name: "Nova 12 Ultra",
+        price: 2800000,
+        storage: 512,
+        ram: 12,
+        battery: 4600,
+        camera: 50,
+        os: "HarmonyOS 4.0",
+        year: 2024,
+        fastCharge: 100,
+        display: "6.76\" OLED",
+        highlights: ["Kirin 9000s", "Diseño premium", "Cámara selfie"],
+        specs: {
+            processor: "Kirin 9000s",
+            display: "6.76\" OLED 120Hz",
+            camera: "50MP + 8MP + 50MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // Tecno
+    {
+        id: 29,
+        brand: "Tecno",
+        name: "Phantom V Fold2",
+        price: 3500000,
+        storage: 512,
+        ram: 12,
+        battery: 5750,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 70,
+        display: "7.85\" LTPO AMOLED",
+        highlights: ["Dimensity 9000+", "Plegable", "Batería grande"],
+        specs: {
+            processor: "MediaTek Dimensity 9000+",
+            display: "7.85\" Plegable AMOLED 120Hz",
+            camera: "50MP + 50MP + 13MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 30,
+        brand: "Tecno",
+        name: "Camon 30 Premier",
+        price: 1800000,
+        storage: 512,
+        ram: 12,
+        battery: 5000,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 70,
+        display: "6.77\" AMOLED",
+        highlights: ["Dimensity 8050", "AI Camera", "Económico"],
+        specs: {
+            processor: "MediaTek Dimensity 8050",
+            display: "6.77\" AMOLED 120Hz",
+            camera: "50MP + 50MP + 2MP",
+            video: "4K",
+            connectivity: "5G"
+        }
+    },
+
+    // ASUS
+    {
+        id: 31,
+        brand: "Asus",
+        name: "ROG Phone 8 Pro",
+        price: 4200000,
+        storage: 512,
+        ram: 24,
+        battery: 6000,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 65,
+        display: "6.78\" AMOLED",
+        highlights: ["Snapdragon 8 Gen 3", "Gaming", "24GB RAM"],
+        specs: {
+            processor: "Snapdragon 8 Gen 3",
+            display: "6.78\" AMOLED 165Hz",
+            camera: "50MP + 13MP + 32MP",
+            video: "8K",
+            connectivity: "5G"
+        }
+    },
+    {
+        id: 32,
+        brand: "Asus",
+        name: "Zenfone 11 Ultra",
+        price: 3200000,
+        storage: 256,
+        ram: 16,
+        battery: 5500,
+        camera: 50,
+        os: "Android 14",
+        year: 2024,
+        fastCharge: 65,
+        display: "6.78\" AMOLED",
+        highlights: ["Snapdragon 8 Gen 3", "Compacto", "AI features"],
+        specs: {
+            processor: "Snapdragon 8 Gen 3",
+            display: "6.78\" AMOLED 144Hz",
+            camera: "50MP + 32MP + 13MP",
+            video: "8K",
+            connectivity: "5G"
+        }
+    },
+  {
+    id: 33,
+    brand: "Samsung",
+    name: "Galaxy A05",
+    price: 650000,
+    storage: 64,
+    ram: 4,
+    battery: 5000,
+    camera: 50,
+    os: "Android 14 (Go Edition)",
+    year: 2023,
+    fastCharge: 25,
+    display: "6.7\" PLS LCD",
+    highlights: ["Gran batería", "Pantalla grande", "Cámara de 50MP"],
+    specs: {
+      processor: "MediaTek Helio G85",
+      display: "6.7\" HD+ PLS LCD 60Hz",
+      camera: "50MP (main) + 2MP (depth)",
+      video: "1080p@30fps",
+      connectivity: "4G"
+    }
+  },
+  {
+    "id": 34,
+    "brand": "Xiaomi",
+    "name": "Redmi 13C",
+    "price": 680000,
+    "storage": 128,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 13",
+    "year": 2023,
+    "fastCharge": 18,
+    "display": "6.74\" LCD",
+    "highlights": ["Pantalla 90Hz", "Gran batería", "Cámara 50MP"],
+    "specs": {
+      "processor": "MediaTek Helio G85",
+      "display": "6.74\" HD+ LCD 90Hz",
+      "camera": "50MP (main) + 2MP (macro) + AI lens",
+      "video": "1080p@30fps",
+      "connectivity": "4G"
+    }
+  },
+  {
+    "id": 35,
+    "brand": "Motorola",
+    "name": "Moto G14",
+    "price": 720000,
+    "storage": 128,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 13",
+    "year": 2023,
+    "fastCharge": 15,
+    "display": "6.5\" IPS LCD",
+    "highlights": ["Sonido estéreo", "Pantalla Full HD+", "Diseño premium"],
+    "specs": {
+      "processor": "Unisoc T616",
+      "display": "6.5\" FHD+ IPS LCD 60Hz",
+      "camera": "50MP (main) + 2MP (macro)",
+      "video": "1080p@30fps",
+      "connectivity": "4G"
+    }
+  },
+  {
+    "id": 36,
+    "brand": "Realme",
+    "name": "Realme C51",
+    "price": 750000,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 13",
+    "year": 2023,
+    "fastCharge": 33,
+    "display": "6.74\" IPS LCD",
+    "highlights": ["Carga rápida 33W", "Cámara de 50MP", "Mini Capsule"],
+    "specs": {
+      "processor": "Unisoc T612",
+      "display": "6.74\" HD+ IPS LCD 90Hz",
+      "camera": "50MP (main) + 0.08MP (depth)",
+      "video": "1080p@30fps",
+      "connectivity": "4G"
+    }
+  },
+  {
+    "id": 37,
+    "brand": "Honor",
+    "name": "Honor X6a",
+    "price": 780000,
+    "storage": 128,
+    "ram": 4,
+    "battery": 5200,
+    "camera": 50,
+    "os": "Android 13",
+    "year": 2023,
+    "fastCharge": 22.5,
+    "display": "6.56\" LCD",
+    "highlights": ["Gran batería", "Pantalla 90Hz", "Cámara 50MP"],
+    "specs": {
+      "processor": "MediaTek Helio G36",
+      "display": "6.56\" HD+ LCD 90Hz",
+      "camera": "50MP (main) + 2MP (macro) + 2MP (depth)",
+      "video": "1080p@30fps",
+      "connectivity": "4G"
+    }
+  },
+  {
+    "id": 38,
+    "brand": "Poco",
+    "name": "Poco X6 Pro",
+    "price": 1100000,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 64,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 67,
+    "display": "6.67\" AMOLED 120Hz",
+    "highlights": ["Pantalla AMOLED 120Hz", "Procesador Dimensity 8300 Ultra", "Cámara con OIS"],
+    "specs": {
+      "processor": "MediaTek Dimensity 8300 Ultra",
+      "display": "6.67\" 1220x2712 AMOLED, HDR10+, Dolby Vision",
+      "camera": "64MP (principal) + 8MP (ultra gran angular) + 2MP (macro)",
+      "video": "4K@30fps, 1080p@30/60fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.4, NFC"
+    }
+  },
+  {
+    "id": 39,
+    "brand": "Poco",
+    "name": "Poco M6 Pro",
+    "price": 800000,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 64,
+    "os": "Android 13",
+    "year": 2024,
+    "fastCharge": 67,
+    "display": "6.67\" AMOLED 120Hz",
+    "highlights": ["Pantalla AMOLED FHD+", "Carga rápida 67W", "Cámara triple con OIS"],
+    "specs": {
+      "processor": "MediaTek Helio G99 Ultra",
+      "display": "6.67\" FHD+ AMOLED, 120Hz",
+      "camera": "64MP (principal) + 8MP (ultra gran angular) + 2MP (macro)",
+      "video": "1080p@30/60fps",
+      "connectivity": "4G, Wi-Fi 5, Bluetooth 5.2, NFC"
+    }
+  },
+  {
+    "id": 40,
+    "brand": "Poco",
+    "name": "Poco C75",
+    "price": 600000,
+    "storage": 128,
+    "ram": 6,
+    "battery": 5160,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.88\" LCD 120Hz",
+    "highlights": ["Pantalla 120Hz", "Gran batería", "Precio accesible"],
+    "specs": {
+      "processor": "MediaTek Helio G81-Ultra",
+      "display": "6.88\" HD+ LCD, 120Hz",
+      "camera": "50MP (principal) + 13MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi, Bluetooth 5.4"
+    }
+  },
+  {
+    "id": 41,
+    "brand": "Poco",
+    "name": "Poco M7 Pro 5G",
+    "price": 900000,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5110,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 45,
+    "display": "6.67\" AMOLED 120Hz",
+    "highlights": ["Conectividad 5G", "Pantalla AMOLED", "Carga rápida 45W"],
+    "specs": {
+      "processor": "MediaTek Dimensity 7025 Ultra",
+      "display": "6.67\" FHD+ AMOLED, 120Hz",
+      "camera": "50MP (principal) + 20MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth"
+    }
+  },
+  {
+    "id": 42,
+    "brand": "Poco",
+    "name": "Poco X7",
+    "price": 1200000,
+    "storage": 256,
+    "ram": 8,
+    "battery": 6000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2025,
+    "fastCharge": 67,
+    "display": "6.67\" AMOLED 120Hz",
+    "highlights": ["Batería de larga duración", "Pantalla AMOLED", "Procesador potente"],
+    "specs": {
+      "processor": "MediaTek Dimensity 7300-Ultra",
+      "display": "6.67\" AMOLED CrystalRes, 120Hz",
+      "camera": "50MP (principal) con OIS",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth"
+    }
+  },
+  {
+    "id": 43,
+    "brand": "Poco",
+    "name": "Poco F7 Ultra",
+    "price": 3200000,
+    "storage": 512,
+    "ram": 16,
+    "battery": 5300,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 120,
+    "display": "6.67\" OLED 144Hz",
+    "highlights": ["Procesador Snapdragon 8 Elite", "Carga rápida 120W", "Cámara triple con teleobjetivo"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 8 Elite",
+      "display": "6.67\" OLED 1.5K, 144Hz",
+      "camera": "50MP (principal) + 50MP (teleobjetivo) + 32MP (ultra gran angular)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC"
+    }
+  },
+  {
+    "id": 44,
+    "brand": "Poco",
+    "name": "Poco F7 Pro",
+    "price": 2500000,
+    "storage": 512,
+    "ram": 12,
+    "battery": 6000,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 90,
+    "display": "6.67\" OLED 144Hz",
+    "highlights": ["Procesador Snapdragon 8 Gen 3", "Batería de 6000mAh", "Pantalla OLED 144Hz"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 8 Gen 3",
+      "display": "6.67\" OLED 1.5K, 144Hz",
+      "camera": "50MP (principal) + 8MP (ultra gran angular)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3, NFC"
+    }
+  },
+  {
+    "id": 45,
+    "brand": "Poco",
+    "name": "Poco M7",
+    "price": 900000,
+    "storage": 128,
+    "ram": 6,
+    "battery": 5160,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2025,
+    "fastCharge": 18,
+    "display": "6.88\" LCD 120Hz",
+    "highlights": ["Pantalla grande 120Hz", "Procesador Snapdragon 4 Gen 2", "Precio accesible"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 4 Gen 2",
+      "display": "6.88\" HD+ LCD, 120Hz",
+      "camera": "50MP (principal) + 8MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.2"
+    }
+  },
+  {
+    "id": 46,
+    "brand": "Poco",
+    "name": "Poco M6 Plus",
+    "price": 800000,
+    "storage": 128,
+    "ram": 6,
+    "battery": 5000,
+    "camera": 108,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 33,
+    "display": "6.79\" LCD 120Hz",
+    "highlights": ["Cámara de 108MP", "Pantalla grande", "Procesador Snapdragon 4 Gen 2"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 4 Gen 2",
+      "display": "6.79\" FHD+ LCD, 120Hz",
+      "camera": "108MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.1"
+    }
+  },
+  {
+    "id": 47,
+    "brand": "Poco",
+    "name": "Poco X6 Neo",
+    "price": 1000000,
+    "storage": 128,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 108,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 33,
+    "display": "6.67\" AMOLED 120Hz",
+    "highlights": ["Cámara de 108MP", "Pantalla AMOLED", "Diseño delgado"],
+    "specs": {
+      "processor": "MediaTek Dimensity 6080",
+      "display": "6.67\" FHD+ AMOLED, 120Hz",
+      "camera": "108MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 48,
+    "brand": "Poco",
+    "name": "Poco C75 5G",
+    "price": 700000,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5160,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.88\" LCD 120Hz",
+    "highlights": ["Conectividad 5G", "Pantalla 120Hz", "Precio competitivo"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 4s Gen 2",
+      "display": "6.88\" HD+ LCD, 120Hz",
+      "camera": "50MP (principal) + 5MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.2"
+    }
+  },
+  {
+    "id": 49,
+    "brand": "Tecno",
+    "name": "Camon 30 Premier 5G",
+    "price": 2949900,
+    "storage": 512,
+    "ram": 12,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 70,
+    "display": "6.77\" LTPO AMOLED 120Hz",
+    "highlights": ["Cámara triple de 50MP", "Pantalla 1.5K LTPO", "Procesador Dimensity 8200 Ultimate"],
+    "specs": {
+      "processor": "MediaTek Dimensity 8200 Ultimate",
+      "display": "6.77\" 1.5K LTPO AMOLED, 120Hz",
+      "camera": "50MP (principal) + 50MP (ultra gran angular) + 50MP (periscopio)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth, NFC"
+    }
+  },
+  {
+    "id": 50,
+    "brand": "Tecno",
+    "name": "Pova 6 Pro 5G",
+    "price": 1299900,
+    "storage": 256,
+    "ram": 12,
+    "battery": 6000,
+    "camera": 108,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 70,
+    "display": "6.78\" AMOLED 120Hz",
+    "highlights": ["Batería de 6000mAh", "Cámara de 108MP", "Procesador Dimensity 6080"],
+    "specs": {
+      "processor": "MediaTek Dimensity 6080",
+      "display": "6.78\" FHD+ AMOLED, 120Hz",
+      "camera": "108MP (principal) + 32MP (frontal)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth, NFC"
+    }
+  },
+  {
+    "id": 51,
+    "brand": "Tecno",
+    "name": "Spark 30C 5G",
+    "price": 999900,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 48,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.67\" IPS LCD 120Hz",
+    "highlights": ["Conectividad 5G", "Pantalla de 120Hz", "Precio accesible"],
+    "specs": {
+      "processor": "MediaTek Dimensity 6300",
+      "display": "6.67\" HD+ IPS LCD, 120Hz",
+      "camera": "48MP (principal) + 8MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth"
+    }
+  },
+  {
+    "id": 52,
+    "brand": "Tecno",
+    "name": "Pop 9 5G",
+    "price": 949900,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 48,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.6\" IPS LCD 120Hz",
+    "highlights": ["Conectividad 5G", "Pantalla de 120Hz", "Diseño compacto"],
+    "specs": {
+      "processor": "MediaTek Dimensity 6300",
+      "display": "6.6\" HD+ IPS LCD, 120Hz",
+      "camera": "48MP (principal) + 8MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth"
+    }
+  },
+  {
+    "id": 53,
+    "brand": "Tecno",
+    "name": "Camon 30 Pro 5G",
+    "price": 2499900,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 70,
+    "display": "6.78\" AMOLED 144Hz",
+    "highlights": ["Cámara triple de 50MP", "Pantalla AMOLED de 144Hz", "Procesador Dimensity 8200 Ultra"],
+    "specs": {
+      "processor": "MediaTek Dimensity 8200 Ultra",
+      "display": "6.78\" FHD+ AMOLED, 144Hz",
+      "camera": "50MP (principal) + 50MP (ultra gran angular) + 2MP (profundidad)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth, NFC"
+    }
+  },
+  {
+    "id": 54,
+    "brand": "Tecno",
+    "name": "Camon 30",
+    "price": 1699900,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 70,
+    "display": "6.78\" AMOLED 120Hz",
+    "highlights": ["Cámara de 50MP con OIS", "Pantalla AMOLED de 120Hz", "Procesador Helio G99 Ultimate"],
+    "specs": {
+      "processor": "MediaTek Helio G99 Ultimate",
+      "display": "6.78\" FHD+ AMOLED, 120Hz",
+      "camera": "50MP (principal) + 50MP (frontal)",
+      "video": "4K@30fps",
+      "connectivity": "4G, Wi-Fi, Bluetooth"
+    }
+  },
+  {
+    "id": 55,
+    "brand": "Tecno",
+    "name": "Pova 6 Neo",
+    "price": 1299900,
+    "storage": 128,
+    "ram": 6,
+    "battery": 7000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.78\" IPS LCD 120Hz",
+    "highlights": ["Batería de 7000mAh", "Pantalla de 120Hz", "Procesador Helio G99 Ultimate"],
+    "specs": {
+      "processor": "MediaTek Helio G99 Ultimate",
+      "display": "6.78\" FHD+ IPS LCD, 120Hz",
+      "camera": "50MP (principal) + 8MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi, Bluetooth"
+    }
+  },
+  {
+    "id": 56,
+    "brand": "Tecno",
+    "name": "Spark Go 1",
+    "price": 749900,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 13,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.67\" IPS LCD 120Hz",
+    "highlights": ["Pantalla de 120Hz", "Procesador Unisoc T615", "Precio accesible"],
+    "specs": {
+      "processor": "Unisoc Tiger T615",
+      "display": "6.67\" HD+ IPS LCD, 120Hz",
+      "camera": "13MP (principal) + 8MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi, Bluetooth"
+    }
+  },
+  {
+    "id": 57,
+    "brand": "Tecno",
+    "name": "Pop 8",
+    "price": 689900,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 13,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.6\" IPS LCD 90Hz",
+    "highlights": ["Pantalla de 90Hz", "Procesador Unisoc T606", "Diseño compacto"],
+    "specs": {
+      "processor": "Unisoc Tiger T606",
+      "display": "6.6\" HD+ IPS LCD, 90Hz",
+      "camera": "13MP (principal) + 8MP (frontal)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi, Bluetooth"
+    }
+  },
+  {
+    "id": 58,
+    "brand": "Tecno",
+    "name": "Camon 20 Premier",
+    "price": 2499900,
+    "storage": 512,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 108,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 70,
+    "display": "6.67\" AMOLED 120Hz",
+    "highlights": ["Cámara de 108MP", "Pantalla AMOLED de 120Hz", "Procesador Dimensity 8050"],
+    "specs": {
+      "processor": "MediaTek Dimensity 8050",
+      "display": "6.67\" FHD+ AMOLED, 120Hz",
+      "camera": "50MP (principal) + 108MP (ultra gran angular) + 2MP (profundidad)",
+      "video": "4K@30fps",
+      "connectivity":"4G, Wi-Fi, Bluetooth"
+ }
+},
+  {
+    "id": 59,
+    "brand": "Realme",
+    "name": "Realme GT 7 Pro",
+    "price": 3068150,
+    "storage": 512,
+    "ram": 12,
+    "battery": 5800,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2024,
+    "fastCharge": 120,
+    "display": "6.78\" LTPO AMOLED 120Hz",
+    "highlights": ["Pantalla ultra brillante", "IP69", "Carga de 120W"],
+    "specs": {
+      "processor": "Snapdragon 8 Gen 3",
+      "display": "6.78\" LTPO AMOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultra gran angular)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC"
+    }
+  },
+  {
+    "id": 60,
+    "brand": "Realme",
+    "name": "Realme GT 7",
+    "price": 2499900,
+    "storage": 256,
+    "ram": 12,
+    "battery": 7000,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2024,
+    "fastCharge": 120,
+    "display": "6.78\" AMOLED 120Hz",
+    "highlights": ["Batería de 7000mAh", "Procesador Dimensity 9400e", "Carga rápida de 120W"],
+    "specs": {
+      "processor": "MediaTek Dimensity 9400e",
+      "display": "6.78\" AMOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultra gran angular)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC"
+    }
+  },
+  {
+    "id": 61,
+    "brand": "Realme",
+    "name": "Realme GT 6T",
+    "price": 2725129,
+    "storage": 256,
+    "ram": 12,
+    "battery": 5500,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 120,
+    "display": "6.78\" LTPO AMOLED 120Hz",
+    "highlights": ["Procesador Snapdragon 7+ Gen 3", "Carga rápida de 120W", "Pantalla LTPO AMOLED"],
+    "specs": {
+      "processor": "Snapdragon 7+ Gen 3",
+      "display": "6.78\" LTPO AMOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultra gran angular)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.4, NFC"
+    }
+  },
+  {
+    "id": 62,
+    "brand": "Realme",
+    "name": "Realme 14 Pro Lite",
+    "price": 1094900,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5200,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 45,
+    "display": "6.7\" AMOLED 120Hz",
+    "highlights": ["Pantalla curva Pro XDR", "Procesador Snapdragon 7s Gen 2", "Carga rápida de 45W"],
+    "specs": {
+      "processor": "Snapdragon 7s Gen 2",
+      "display": "6.7\" AMOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultra gran angular)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.2, NFC"
+    }
+  },
+  {
+    "id": 63,
+    "brand": "Realme",
+    "name": "Realme 12 5G",
+    "price": 844900,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 33,
+    "display": "6.72\" IPS LCD 120Hz",
+    "highlights": ["Procesador Dimensity 6100+", "Pantalla de 120Hz", "Carga rápida de 33W"],
+    "specs": {
+      "processor": "MediaTek Dimensity 6100+",
+      "display": "6.72\" IPS LCD, 120Hz",
+      "camera": "50MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 64,
+    "brand": "Realme",
+    "name": "Realme C65 5G",
+    "price": 1049900,
+    "storage": 128,
+    "ram": 6,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 33,
+    "display": "6.67\" IPS LCD 120Hz",
+    "highlights": ["Procesador Dimensity 6100+", "Pantalla de 120Hz", "Carga rápida de 33W"],
+    "specs": {
+      "processor": "MediaTek Dimensity 6100+",
+      "display": "6.67\" IPS LCD, 120Hz",
+      "camera": "50MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 65,
+    "brand": "Realme",
+    "name": "Realme 14 Pro 5G",
+    "price": 2199900,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 67,
+    "display": "6.7\" AMOLED 120Hz",
+    "highlights": ["Procesador Snapdragon 7s Gen 2", "Pantalla AMOLED curva", "Carga rápida de 67W"],
+    "specs": {
+      "processor": "Snapdragon 7s Gen 2",
+      "display": "6.7\" AMOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultra gran angular)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.2, NFC"
+    }
+  },
+  {
+    "id": 66,
+    "brand": "Oppo",
+    "name": "Oppo Find X7",
+    "price": 3999900,
+    "storage": 512,
+    "ram": 12,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 80,
+    "display": "6.78\" LTPO AMOLED 120Hz",
+    "highlights": ["Procesador Dimensity 9300", "Pantalla LTPO AMOLED", "Carga rápida de 80W"],
+    "specs": {
+      "processor": "MediaTek Dimensity 9300",
+      "display": "6.78\" LTPO AMOLED, 120Hz",
+      "camera": "50MP (principal) + 50MP (ultra gran angular) + 64MP (telefoto)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC"
+    }
+  },
+  {
+    "id": 67,
+    "brand": "Oppo",
+    "name": "Oppo Find X7 Ultra",
+    "price": 4999900,
+    "storage": 512,
+    "ram": 16,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 100,
+    "display": "6.82\" LTPO AMOLED 120Hz",
+    "highlights": ["Procesador Snapdragon 8 Gen 3", "Cámara cuádruple de 50MP", "Carga rápida de 100W"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 8 Gen 3",
+      "display": "6.82\" LTPO AMOLED, 120Hz",
+      "camera": "50MP (principal) + 50MP (ultra gran angular) + 50MP (telefoto) + 50MP (periscopio)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC"
+    }
+  },
+  {
+    "id": 68,
+    "brand": "Oppo",
+    "name": "Oppo A5 Pro",
+    "price": 1699900,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5800,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 45,
+    "display": "6.67\" LCD 120Hz",
+    "highlights": ["Resistencia IP69", "Procesador Dimensity 6300", "Carga rápida de 45W"],
+    "specs": {
+      "processor": "MediaTek Dimensity 6300",
+      "display": "6.67\" LCD, 120Hz",
+      "camera": "50MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 69,
+    "brand": "Oppo",
+    "name": "Oppo F29 5G",
+    "price": 1150000,
+    "storage": 256,
+    "ram": 8,
+    "battery": 6500,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2025,
+    "fastCharge": 45,
+    "display": "6.7\" AMOLED",
+    "highlights": ["Resistencia al agua", "Procesador Snapdragon 6 Gen 1", "Carga rápida de 45W"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 6 Gen 1",
+      "display": "6.7\" AMOLED",
+      "camera": "50MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 70,
+    "brand": "Oppo",
+    "name": "Oppo F29 Pro 5G",
+    "price": 1450000,
+    "storage": 256,
+    "ram": 12,
+    "battery": 6000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2025,
+    "fastCharge": 80,
+    "display": "6.7\" AMOLED Quad-Curved",
+    "highlights": ["Certificación MIL-STD-810H", "Procesador Dimensity 7300", "Carga rápida de 80W"],
+    "specs": {
+      "processor": "MediaTek Dimensity 7300",
+      "display": "6.7\" AMOLED Quad-Curved",
+      "camera": "50MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 71,
+    "brand": "Oppo",
+    "name": "Oppo K12 Plus",
+    "price": 1299900,
+    "storage": 512,
+    "ram": 12,
+    "battery": 6400,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 80,
+    "display": "6.7\" AMOLED 120Hz",
+    "highlights": ["Procesador Snapdragon 7 Gen 3", "Carga rápida de 80W", "Pantalla AMOLED de 120Hz"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 7 Gen 3",
+      "display": "6.7\" AMOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultra gran angular)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 72,
+    "brand": "Oppo",
+    "name": "Oppo A60",
+    "price": 799900,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 33,
+    "display": "6.67\" IPS LCD 90Hz",
+    "highlights": ["Procesador Snapdragon 680", "Pantalla de 90Hz", "Carga rápida de 33W"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 680",
+      "display": "6.67\" IPS LCD, 90Hz",
+      "camera": "50MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 73,
+    "brand": "Oppo",
+    "name": "Oppo A40",
+    "price": 629900,
+    "storage": 256,
+    "ram": 6,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 33,
+    "display": "6.56\" IPS LCD 90Hz",
+    "highlights": ["Diseño compacto", "Procesador Snapdragon 6s Gen 1", "Carga rápida de 33W"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 6s Gen 1",
+      "display": "6.56\" IPS LCD, 90Hz",
+      "camera": "50MP (principal) + 2MP (profundidad)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 74,
+    "brand": "Oppo",
+    "name": "Oppo Reno 12F",
+    "price": 1759900,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 67,
+    "display": "6.7\" AMOLED 120Hz",
+    "highlights": ["Procesador Snapdragon 685", "Pantalla AMOLED de 120Hz", "Carga rápida de 67W"],
+    "specs": {
+      "processor": "Qualcomm Snapdragon 685",
+      "display": "6.7\" AMOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultra gran angular) + 2MP (macro)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 75,
+    "brand": "Oppo",
+    "name": "Oppo Find X8s",
+    "price": 4299900,
+    "storage": 512,
+    "ram": 16,
+    "battery": 5700,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 80,
+    "display": "6.3\" OLED 120Hz",
+    "highlights": ["Procesador Dimensity 9400+", "Pantalla OLED de 120Hz", "Carga rápida de 80W"],
+    "specs": {
+      "processor": "MediaTek Dimensity 9400+",
+      "display": "6.7\" AMOLED, 120Hz",
+      "camera": "32 MP; f/2,4; FOV: 90°; lente 5P",
+      "video": "4K@30/60 fps",
+      "connectivity": "Wi-Fi 7 (802.11be), Wi-Fi 6 (802.11ax), Wi-Fi 5 (802.11ac) y 802.11a/b/g/n/ - 5G"
+ }
+},
+  {
+    "id": 76,
+    "brand": "Google",
+    "name": "Pixel 8",
+    "price": 2100000,
+    "storage": 128,
+    "ram": 8,
+    "battery": 4575,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2023,
+    "fastCharge": 27,
+    "display": "6.2\" OLED 120Hz",
+    "highlights": ["Pantalla OLED de 120Hz", "Procesador Tensor G3", "Cámara dual con IA"],
+    "specs": {
+      "processor": "Google Tensor G3",
+      "display": "6.2\" FHD+ OLED, 120Hz",
+      "camera": "50MP (principal) + 12MP (ultrawide)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 77,
+    "brand": "Google",
+    "name": "Pixel 8a",
+    "price": 2250000,
+    "storage": 128,
+    "ram": 8,
+    "battery": 4492,
+    "camera": 64,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.1\" OLED 120Hz",
+    "highlights": ["Pantalla OLED de 120Hz", "Procesador Tensor G3", "Cámara dual con IA"],
+    "specs": {
+      "processor": "Google Tensor G3",
+      "display": "6.1\" FHD+ OLED, 120Hz",
+      "camera": "64MP (principal) + 13MP (ultrawide)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 6E, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 78,
+    "brand": "Google",
+    "name": "Pixel 9a",
+    "price": 2500000,
+    "storage": 128,
+    "ram": 8,
+    "battery": 5100,
+    "camera": 48,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 23,
+    "display": "6.3\" OLED 120Hz",
+    "highlights": ["Pantalla OLED de 120Hz", "Procesador Tensor G4", "Cámara dual con IA"],
+    "specs": {
+      "processor": "Google Tensor G4",
+      "display": "6.3\" FHD+ OLED, 120Hz",
+      "camera": "48MP (principal) + 13MP (ultrawide)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 79,
+    "brand": "Google",
+    "name": "Pixel 9 Pro Fold",
+    "price": 3100000,
+    "storage": 256,
+    "ram": 16,
+    "battery": 4650,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 27,
+    "display": "6.3\" Actua (externa), 8\" Super Actua Flex (interna) 120Hz",
+    "highlights": ["Pantalla plegable de 8\"", "Procesador Tensor G4", "Cámara triple con IA"],
+    "specs": {
+      "processor": "Google Tensor G4",
+      "display": "6.3\" Actua (externa), 8\" Super Actua Flex (interna), 120Hz",
+      "camera": "50MP (principal) + 10.5MP (ultrawide) + 10.8MP (telefoto)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 76,
+    "brand": "Google",
+    "name": "Pixel 8",
+    "price": 1950000,
+    "storage": 128,
+    "ram": 8,
+    "battery": 4575,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2023,
+    "fastCharge": 27,
+    "display": "6.2\" OLED 120Hz",
+    "highlights": ["Pantalla OLED de 120Hz", "Procesador Tensor G3", "Cámara dual con IA"],
+    "specs": {
+      "processor": "Google Tensor G3",
+      "display": "6.2\" FHD+ OLED, 120Hz",
+      "camera": "50MP (principal) + 12MP (ultrawide)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 77,
+    "brand": "Google",
+    "name": "Pixel 8a",
+    "price": 1760000,
+    "storage": 128,
+    "ram": 8,
+    "battery": 4492,
+    "camera": 64,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 18,
+    "display": "6.1\" OLED 120Hz",
+    "highlights": ["Pantalla OLED de 120Hz", "Procesador Tensor G3", "Cámara dual con IA"],
+    "specs": {
+      "processor": "Google Tensor G3",
+      "display": "6.1\" FHD+ OLED, 120Hz",
+      "camera": "64MP (principal) + 13MP (ultrawide)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 6E, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 78,
+    "brand": "Google",
+    "name": "Pixel 9a",
+    "price": 2050000,
+    "storage": 128,
+    "ram": 8,
+    "battery": 5100,
+    "camera": 48,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 23,
+    "display": "6.3\" OLED 120Hz",
+    "highlights": ["Pantalla OLED de 120Hz", "Procesador Tensor G4", "Cámara dual con IA"],
+    "specs": {
+      "processor": "Google Tensor G4",
+      "display": "6.3\" FHD+ OLED, 120Hz",
+      "camera": "48MP (principal) + 13MP (ultrawide)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 79,
+    "brand": "Google",
+    "name": "Pixel 9 Pro Fold",
+    "price": 3600000,
+    "storage": 256,
+    "ram": 16,
+    "battery": 4650,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 27,
+    "display": "6.3\" Actua (externa), 8\" Super Actua Flex (interna) 120Hz",
+    "highlights": ["Pantalla plegable de 8\"", "Procesador Tensor G4", "Cámara triple con IA"],
+    "specs": {
+      "processor": "Google Tensor G4",
+      "display": "6.3\" Actua (externa), 8\" Super Actua Flex (interna), 120Hz",
+      "camera": "50MP (principal) + 10.5MP (ultrawide) + 10.8MP (telefoto)",
+      "video": "4K@60fps",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 80,
+    "brand": "Motorola",
+    "name": "Moto G86 Power 5G",
+    "price": 329,
+    "storage": 512,
+    "ram": 8,
+    "battery": 6720,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2025,
+    "fastCharge": 33,
+    "display": "6.67\" pOLED 120Hz",
+    "highlights": ["Batería de larga duración", "Pantalla brillante", "Resistencia IP68/IP69"],
+    "specs": {
+      "processor": "MediaTek Dimensity 7300",
+      "display": "6.67\" FHD+ pOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultrawide)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.4"
+    }
+  },
+  {
+    "id": 81,
+    "brand": "Motorola",
+    "name": "Moto G86 5G",
+    "price": 299,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5200,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2025,
+    "fastCharge": 33,
+    "display": "6.67\" pOLED 120Hz",
+    "highlights": ["Pantalla pOLED", "Procesador eficiente", "Cámara Sony LYTIA 600"],
+    "specs": {
+      "processor": "MediaTek Dimensity 7300",
+      "display": "6.67\" FHD+ pOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultrawide)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.4"
+    }
+  },
+  {
+    "id": 82,
+    "brand": "Motorola",
+    "name": "Moto G56 5G",
+    "price": 249,
+    "storage": 128,
+    "ram": 6,
+    "battery": 5200,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2025,
+    "fastCharge": 30,
+    "display": "6.72\" LCD 120Hz",
+    "highlights": ["Pantalla grande", "Altavoces Dolby Atmos", "Procesador Dimensity 7060"],
+    "specs": {
+      "processor": "MediaTek Dimensity 7060",
+      "display": "6.72\" FHD+ LCD, 120Hz",
+      "camera": "50MP (principal) + 2MP (macro)",
+      "video": "1080p@30fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 83,
+    "brand": "Motorola",
+    "name": "Moto G Stylus (2025)",
+    "price": 399,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 15",
+    "year": 2025,
+    "fastCharge": 68,
+    "display": "6.7\" OLED 120Hz",
+    "highlights": ["Incluye stylus", "Carga inalámbrica", "Pantalla OLED brillante"],
+    "specs": {
+      "processor": "Snapdragon 6 Gen 3",
+      "display": "6.7\" FHD+ OLED, 120Hz",
+      "camera": "50MP (principal) + 13MP (ultrawide)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi 6E, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 84,
+    "brand": "Motorola",
+    "name": "Moto G75 5G",
+    "price": 269,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 30,
+    "display": "6.78\" LCD 120Hz",
+    "highlights": ["Durabilidad militar", "Batería de larga duración", "Pantalla grande"],
+    "specs": {
+      "processor": "Snapdragon 6 Gen 3",
+      "display": "6.78\" FHD+ LCD, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultrawide)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 85,
+    "brand": "Motorola",
+    "name": "Moto G85",
+    "price": 249,
+    "storage": 256,
+    "ram": 8,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 30,
+    "display": "6.67\" pOLED 120Hz",
+    "highlights": ["Pantalla pOLED", "Procesador eficiente", "Cámara dual"],
+    "specs": {
+      "processor": "Snapdragon 6s Gen 3",
+      "display": "6.67\" FHD+ pOLED, 120Hz",
+      "camera": "50MP (principal) + 8MP (ultrawide)",
+      "video": "4K@30fps",
+      "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3"
+    }
+  },
+  {
+    "id": 86,
+    "brand": "Motorola",
+    "name": "Moto G24 Power",
+    "price": 107,
+    "storage": 128,
+    "ram": 4,
+    "battery": 6000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 30,
+    "display": "6.56\" LCD 90Hz",
+    "highlights": ["Batería de 6000mAh", "Carga rápida", "Precio asequible"],
+    "specs": {
+      "processor": "MediaTek Helio G85",
+      "display": "6.56\" HD+ LCD, 90Hz",
+      "camera": "50MP (principal) + 2MP (macro)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi 5, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 87,
+    "brand": "Motorola",
+    "name": "Moto G04",
+    "price": 149,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 16,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 15,
+    "display": "6.56\" LCD 60Hz",
+    "highlights": ["Diseño compacto", "Precio económico", "Batería duradera"],
+    "specs": {
+      "processor": "MediaTek Helio G37",
+      "display": "6.56\" HD+ LCD, 60Hz",
+      "camera": "16MP (principal)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi 5, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 88,
+    "brand": "Motorola",
+    "name": "Moto G Play (2024)",
+    "price": 149,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 50,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 15,
+    "display": "6.5\" LCD 90Hz",
+    "highlights": ["Pantalla fluida", "Diseño resistente al agua", "Precio accesible"],
+    "specs": {
+      "processor": "Snapdragon 680",
+      "display": "6.5\" HD+ LCD, 90Hz",
+      "camera": "50MP (principal)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi 5, Bluetooth 5.0"
+    }
+  },
+  {
+    "id": 89,
+    "brand": "Motorola",
+    "name": "Moto E14",
+    "price": 85,
+    "storage": 64,
+    "ram": 4,
+    "battery": 5000,
+    "camera": 13,
+    "os": "Android 14",
+    "year": 2024,
+    "fastCharge": 15,
+    "display": "6.56\" LCD 90Hz",
+    "highlights": ["Precio muy bajo", "Pantalla fluida", "Diseño compacto"],
+    "specs": {
+      "processor": "UNISOC T606",
+      "display": "6.56\" HD+ LCD, 90Hz",
+      "camera": "13MP (principal)",
+      "video": "1080p@30fps",
+      "connectivity": "4G, Wi-Fi 5, Bluetooth 5.0"
+    }
+  }
+];
+        let currentPhones = [...phonesDB];
+        let isSmartSearch = false;
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            displayPhones(currentPhones);
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Sincronizar slider con input de presupuesto
+            const budgetSlider = document.getElementById('budgetSlider');
+            const maxBudget = document.getElementById('maxBudget');
+            
+            budgetSlider.addEventListener('input', function() {
+                maxBudget.value = this.value;
+            });
+            
+            maxBudget.addEventListener('input', function() {
+                budgetSlider.value = this.value;
+            });
+
+            // Checkbox interactivos
+            document.getElementById('priorities').addEventListener('click', function(e) {
+                if (e.target.type === 'checkbox' || e.target.closest('.checkbox-item')) {
+                    const item = e.target.closest('.checkbox-item') || e.target.parentElement;
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    
+                    if (e.target.type !== 'checkbox') {
+                        checkbox.checked = !checkbox.checked;
+                    }
+                    
+                    item.classList.toggle('checked', checkbox.checked);
+                }
+            });
+        }
+
+        function findSmartRecommendations() {
+            isSmartSearch = true;
+            const priorities = Array.from(document.querySelectorAll('#priorities input:checked')).map(cb => cb.value);
+            const maxBudget = parseInt(document.getElementById('maxBudget').value) || 1000000;
+            
+            if (priorities.length === 0) {
+                showToast('Selecciona al menos una prioridad para obtener recomendaciones', 'warning');
+                return;
+            }
+            
+            showLoading();
+            
+            setTimeout(() => {
+                let recommendations = getSmartRecommendations(priorities, maxBudget);
+                displayPhones(recommendations, true);
+                showToast(`Encontradas ${recommendations.length} recomendaciones inteligentes`, 'success');
+            }, 1000);
+        }
+
+        function getSmartRecommendations(priorities, maxBudget) {
+            let scored = phonesDB.map(phone => {
+                let score = 0;
+                let reasons = [];
+                
+                // Evaluar cada prioridad
+                priorities.forEach(priority => {
+                    switch(priority) {
+                        case 'camera':
+                            if (phone.camera >= 50) {
+                                score += phone.camera >= 100 ? 25 : 15;
+                                reasons.push('Excelente cámara');
+                            }
+                            break;
+                        case 'battery':
+                            if (phone.battery >= 4500) {
+                                score += phone.battery >= 5000 ? 20 : 15;
+                                reasons.push('Batería duradera');
+                            }
+                            break;
+                        case 'performance':
+                            if (phone.ram >= 8) {
+                                score += phone.ram >= 12 ? 20 : 15;
+                                reasons.push('Alto rendimiento');
+                            }
+                            break;
+                        case 'storage':
+                            if (phone.storage >= 256) {
+                                score += phone.storage >= 512 ? 20 : 15;
+                                reasons.push('Amplio almacenamiento');
+                            }
+                            break;
+                        case 'display':
+                            if (phone.display.includes('AMOLED') || phone.display.includes('OLED')) {
+                                score += 15;
+                                reasons.push('Pantalla premium');
+                            }
+                            break;
+                        case 'fastcharge':
+                            if (phone.fastCharge >= 25) {
+                                score += phone.fastCharge >= 60 ? 20 : 15;
+                                reasons.push('Carga rápida');
+                            }
+                            break;
+                    }
+                });
+                
+                // Bonus por estar dentro del presupuesto
+                if (phone.price <= maxBudget) {
+                    score += 10;
+                } else if (phone.price <= maxBudget * 1.2) {
+                    score += 5; // Pequeño bonus si está cerca del presupuesto
+                }
+                
+                // Bonus por valor (características vs precio)
+                const valueScore = (score / (phone.price / 1000000)) * 5;
+                score += valueScore;
+                
+                return { ...phone, score, reasons };
+            });
+            
+            // Ordenar por puntuación y filtrar los mejores
+            scored.sort((a, b) => b.score - a.score);
+            
+            // Incluir opciones dentro del presupuesto y algunas ligeramente por encima
+            let inBudget = scored.filter(phone => phone.price <= maxBudget);
+            let nearBudget = scored.filter(phone => phone.price > maxBudget && phone.price <= maxBudget * 1.3);
+            
+            return [...inBudget.slice(0, 6), ...nearBudget.slice(0, 3)];
+        }
+
+        function applyFilters() {
+            isSmartSearch = false;
+            showLoading();
+            
+            setTimeout(() => {
+                const filters = {
+                    brand: document.getElementById('brandFilter').value,
+                    priceMin: parseInt(document.getElementById('priceMinFilter').value) || 0,
+                    priceMax: parseInt(document.getElementById('priceMaxFilter').value) || Infinity,
+                    storage: parseInt(document.getElementById('storageFilter').value) || 0,
+                    ram: parseInt(document.getElementById('ramFilter').value) || 0,
+                    os: document.getElementById('osFilter').value,
+                    year: parseInt(document.getElementById('yearFilter').value) || 0,
+                    battery: parseInt(document.getElementById('batteryFilter').value) || 0
+                };
+                
+                const filtered = phonesDB.filter(phone => {
+                    return (!filters.brand || phone.brand === filters.brand) &&
+                           (phone.price >= filters.priceMin) &&
+                           (phone.price <= filters.priceMax) &&
+                           (phone.storage >= filters.storage) &&
+                           (phone.ram >= filters.ram) &&
+                           (!filters.os || phone.os === filters.os) &&
+                           (phone.year >= filters.year) &&
+                           (phone.battery >= filters.battery);
+                });
+                
+                currentPhones = filtered;
+                displayPhones(filtered);
+                showToast(`${filtered.length} teléfonos encontrados`, 'success');
+            }, 500);
+        }
+
+        function clearFilters() {
+            document.getElementById('brandFilter').value = '';
+            document.getElementById('priceMinFilter').value = '';
+            document.getElementById('priceMaxFilter').value = '';
+            document.getElementById('storageFilter').value = '';
+            document.getElementById('ramFilter').value = '';
+            document.getElementById('osFilter').value = '';
+            document.getElementById('yearFilter').value = '';
+            document.getElementById('batteryFilter').value = '';
+            
+            // Limpiar también el buscador inteligente
+            document.querySelectorAll('#priorities input').forEach(cb => {
+                cb.checked = false;
+                cb.parentElement.classList.remove('checked');
+            });
+            document.getElementById('maxBudget').value = '1000000';
+            document.getElementById('budgetSlider').value = '1000000';
+            
+            currentPhones = [...phonesDB];
+            displayPhones(currentPhones);
+            showToast('Filtros eliminados', 'info');
+        }
+
+        function displayPhones(phones, isRecommendation = false) {
+            const container = document.getElementById('phonesContainer');
+            
+            if (phones.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No se encontraron teléfonos</h3>
+                        <p>Prueba ajustando los filtros o criterios de búsqueda</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const phonesHTML = phones.map((phone, index) => {
+                const isRecommended = isRecommendation && index < 3;
+                const priceBadge = phone.price > (parseInt(document.getElementById('maxBudget').value) || 1000000) ? 
+                    'Por Poco más' : 'Dentro del presupuesto';
+                
+                return `
+                    <div class="phone-card ${isRecommended ? 'recommendation-card' : ''}">
+                        ${isRecommended ? `<div class="recommendation-badge">Recomendado</div>` : ''}
+                        
+                        <div class="phone-header">
+                            <div>
+                                <div class="phone-name">${phone.name}</div>
+                                <div class="phone-brand">${phone.brand}</div>
+                            </div>
+                            <div class="phone-price">
+                                ${(phone.price / 1000).toFixed(0)}K
+                                ${isRecommendation ? `<div style="font-size: 0.7rem; color: #666; margin-top: 2px;">${priceBadge}</div>` : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="phone-specs">
+                            <div class="spec-item">
+                                <i class="fas fa-memory"></i>
+                                <span>${phone.ram}GB RAM</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-hdd"></i>
+                                <span>${phone.storage}GB</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-battery-three-quarters"></i>
+                                <span>${phone.battery}mAh</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-camera"></i>
+                                <span>${phone.camera}MP</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-bolt"></i>
+                                <span>${phone.fastCharge}W</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>${phone.os}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="phone-highlights">
+                            ${phone.highlights.map(highlight => `<span class="highlight-tag">${highlight}</span>`).join('')}
+                            ${phone.reasons ? phone.reasons.map(reason => `<span class="highlight-tag">${reason}</span>`).join('') : ''}
+                        </div>
+                        
+                        <div style="margin: 15px 0; padding: 15px; background: #f8f9ff; border-radius: 10px; font-size: 0.9rem;">
+                            <div style="margin-bottom: 8px;"><strong>Procesador:</strong> ${phone.specs.processor}</div>
+                            <div style="margin-bottom: 8px;"><strong>Pantalla:</strong> ${phone.specs.display}</div>
+                            <div style="margin-bottom: 8px;"><strong>Cámaras:</strong> ${phone.specs.camera}</div>
+                            <div style="margin-bottom: 8px;"><strong>Video:</strong> ${phone.specs.video}</div>
+                            <div><strong>Conectividad:</strong> ${phone.specs.connectivity}</div>
+                        </div>
+                        
+                        <div class="phone-actions">
+                            <button class="btn btn-primary" onclick="showPhoneDetails(${phone.id})">
+                                <i class="fas fa-info-circle"></i> Más Info
+                            </button>
+                            <button class="btn btn-secondary" onclick="comparePhone(${phone.id})">
+                                <i class="fas fa-balance-scale"></i> Comparar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = `<div class="phones-grid">${phonesHTML}</div>`;
+        }
+
+        function showLoading() {
+            document.getElementById('phonesContainer').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            `;
+        }
+
+        function showPhoneDetails(phoneId) {
+            const phone = phonesDB.find(p => p.id === phoneId);
+            if (!phone) return;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 20px;
+                    padding: 30px;
+                    max-width: 600px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="color: #667eea; margin: 0;">${phone.brand} ${phone.name}</h2>
+                        <button onclick="this.closest('.modal').remove()" style="
+                            background: none;
+                            border: none;
+                            font-size: 1.5rem;
+                            cursor: pointer;
+                            color: #666;
+                        ">&times;</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                        <div style="text-align: center; padding: 20px; background: #f8f9ff; border-radius: 12px;">
+                            <div style="font-size: 2rem; font-weight: bold; color: #ff6b6b;">${(phone.price / 1000).toFixed(0)}K</div>
+                            <div style="color: #666;">Precio en COP</div>
+                        </div>
+                        <div style="text-align: center; padding: 20px; background: #f8f9ff; border-radius: 12px;">
+                            <div style="font-size: 2rem; font-weight: bold; color: #4ecdc4;">${phone.year}</div>
+                            <div style="color: #666;">Año de lanzamiento</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Especificaciones Completas</h3>
+                        <div style="display: grid; gap: 10px; font-size: 0.95rem;">
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Procesador:</strong> <span>${phone.specs.processor}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Pantalla:</strong> <span>${phone.specs.display}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Memoria RAM:</strong> <span>${phone.ram}GB</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Almacenamiento:</strong> <span>${phone.storage}GB</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Batería:</strong> <span>${phone.battery}mAh</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Carga Rápida:</strong> <span>${phone.fastCharge}W</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Cámaras:</strong> <span>${phone.specs.camera}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Video:</strong> <span>${phone.specs.video}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Sistema:</strong> <span>${phone.os}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Conectividad:</strong> <span>${phone.specs.connectivity}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Características Destacadas</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${phone.highlights.map(highlight => `
+                                <span style="
+                                    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+                                    color: white;
+                                    padding: 8px 15px;
+                                    border-radius: 20px;
+                                    font-size: 0.9rem;
+                                    font-weight: 600;
+                                ">${highlight}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(phone.brand + ' ' + phone.name + ' precio Colombia')}')" style="
+                            background: #667eea;
+                            color: white;
+                            border: none;
+                            padding: 12px 20px;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            flex: 1;
+                        ">Buscar Precio</button>
+                        <button onclick="this.closest('.modal').remove()" style="
+                            background: transparent;
+                            color: #667eea;
+                            border: 2px solid #667eea;
+                            padding: 12px 20px;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            flex: 1;
+                        ">Cerrar</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.className = 'modal';
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        function comparePhone(phoneId) {
+            // Funcionalidad para comparar teléfonos - se puede expandir
+            showToast('Función de comparación próximamente disponible', 'info');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            const colors = {
+                success: '#4ecdc4',
+                warning: '#ffa726',
+                error: '#ff6b6b',
+                info: '#667eea'
+            };
+            
+            toast.style.background = colors[type] || colors.info;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Formatear números como moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+        function showPhoneDetails(phoneId) {
+            const phone = phonesDB.find(p => p.id === phoneId);
+            if (!phone) return;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 20px;
+                    padding: 30px;
+                    max-width: 600px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="color: #667eea; margin: 0;">${phone.brand} ${phone.name}</h2>
+                        <button onclick="this.closest('.modal').remove()" style="
+                            background: none;
+                            border: none;
+                            font-size: 1.5rem;
+                            cursor: pointer;
+                            color: #666;
+                        ">&times;</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                        <div style="text-align: center; padding: 20px; background: #f8f9ff; border-radius: 12px;">
+                            <div style="font-size: 2rem; font-weight: bold; color: #ff6b6b;">${(phone.price / 1000).toFixed(0)}K</div>
+                            <div style="color: #666;">Precio en COP</div>
+                        </div>
+                        <div style="text-align: center; padding: 20px; background: #f8f9ff; border-radius: 12px;">
+                            <div style="font-size: 2rem; font-weight: bold; color: #4ecdc4;">${phone.year}</div>
+                            <div style="color: #666;">Año de lanzamiento</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Especificaciones Completas</h3>
+                        <div style="display: grid; gap: 10px; font-size: 0.95rem;">
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Procesador:</strong> <span>${phone.specs.processor}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Pantalla:</strong> <span>${phone.specs.display}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Memoria RAM:</strong> <span>${phone.ram}GB</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Almacenamiento:</strong> <span>${phone.storage}GB</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Batería:</strong> <span>${phone.battery}mAh</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Carga Rápida:</strong> <span>${phone.fastCharge}W</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Cámaras:</strong> <span>${phone.specs.camera}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Video:</strong> <span>${phone.specs.video}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Sistema:</strong> <span>${phone.os}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                                <strong>Conectividad:</strong> <span>${phone.specs.connectivity}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Características Destacadas</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${phone.highlights.map(highlight => `
+                                <span style="
+                                    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+                                    color: white;
+                                    padding: 8px 15px;
+                                    border-radius: 20px;
+                                    font-size: 0.9rem;
+                                    font-weight: 600;
+                                ">${highlight}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(phone.brand + ' ' + phone.name + ' precio Colombia')}', '_blank')" style="
+                            background: #667eea;
+                            color: white;
+                            border: none;
+                            padding: 12px 20px;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            flex: 1;
+                        ">
+                            <i class="fas fa-search"></i> Buscar Precio
+                        </button>
+                        <button onclick="this.closest('.modal').remove()" style="
+                            background: transparent;
+                            color: #667eea;
+                            border: 2px solid #667eea;
+                            padding: 12px 20px;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            flex: 1;
+                        ">
+                            <i class="fas fa-times"></i> Cerrar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            modal.className = 'modal';
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        function comparePhone(phoneId) {
+            showToast('Función de comparación en desarrollo. ¡Próximamente!', 'info');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            const colors = {
+                success: '#4ecdc4',
+                warning: '#ffa726',
+                error: '#ff6b6b',
+                info: '#667eea'
+            };
+            
+            toast.style.background = colors[type] || colors.info;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Formatear números como moneda
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+    </script>
+</body>
+</html>
