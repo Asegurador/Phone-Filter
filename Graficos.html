@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Térmico y Flujo de Paquetes</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.24.1/plotly.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-header.exercise-2 {
+            background: linear-gradient(135deg, #4834d4, #686de0);
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .card-content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .parameters {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .parameters ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .parameters li {
+            margin: 8px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .parameters li:last-child {
+            border-bottom: none;
+        }
+
+        .formula {
+            background: #f1f2f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+            overflow-x: auto;
+        }
+
+        .plot-container {
+            margin: 25px 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .plot-title {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .calculation-result {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: #e9ecef;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .tab:hover {
+            background: #74b9ff;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .interactive-controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .control-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .update-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .update-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card-content {
+                padding: 20px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card-header h2 {
+                font-size: 1.4rem;
+            }
+
+            .section h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 Análisis Térmico y Flujo de Paquetes</h1>
+            <p>Ejercicios resueltos con visualizaciones 3D interactivas para análisis de transferencia de calor y flujo de datos en sistemas electrónicos</p>
+        </div>
+
+        <!-- Ejercicio 1: Energía Térmica -->
+        <div class="exercise-card">
+            <div class="card-header">
+                <h2>🌡️ Ejercicio 1: Energía Térmica en Placa de Cobre</h2>
+                <p>Análisis de distribución de temperatura en componentes de PCB</p>
+            </div>
+            <div class="card-content">
+                <div class="section">
+                    <h3>📋 Contexto</h3>
+                    <p>Este ejercicio modela la distribución de temperatura en una placa de cobre de 10 cm × 10 cm × 1 mm, típica en placas de circuito impreso (PCBs) para disipar el calor generado por circuitos integrados.</p>
+                    
+                    <div class="parameters">
+                        <h4>Propiedades del Cobre:</h4>
+                        <ul>
+                            <li><strong>Conductividad térmica (k):</strong> 400 W/(m·K)</li>
+                            <li><strong>Densidad (ρ):</strong> 8960 kg/m³</li>
+                            <li><strong>Calor específico (Cp):</strong> 385 J/(kg·K)</li>
+                            <li><strong>Espesor (t):</strong> 0.001 m</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🧮 Modelo Matemático</h3>
+                    <div class="formula">
+                        <p><strong>Distribución de temperatura:</strong></p>
+                        $$T(x, y) = 60 - 100x^2 - 100y^2 \quad (°C)$$
+                        
+                        <p><strong>Energía térmica total:</strong></p>
+                        $$Q = \rho C_p t \iint_S (60 - 100x^2 - 100y^2) \, dA$$
+                        
+                        <p>donde x, y ∈ [-0.05, 0.05] m</p>
+                    </div>
+                </div>
+
+                <div class="interactive-controls">
+                    <h4>🎛️ Controles Interactivos</h4>
+                    <div class="control-group">
+                        <label for="temp-base">Temperatura Base (°C):</label>
+                        <input type="number" id="temp-base" value="60" min="20" max="100">
+                    </div>
+                    <div class="control-group">
+                        <label for="coeff-a">Coeficiente a:</label>
+                        <input type="number" id="coeff-a" value="100" min="50" max="200">
+                    </div>
+                    <button class="update-btn" onclick="updateThermalPlot()">🔄 Actualizar Gráfico</button>
+                </div>
+
+                <div class="plot-container">
+                    <div class="plot-title">📊 Distribución de Temperatura 3D</div>
+                    <div id="thermal-plot" style="height: 500px;"></div>
+                </div>
+
+                <div class="calculation-result" id="thermal-result">
+                    📏 Energía térmica total: 2068.79 J
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('thermal-analytical', this)">📝 Solución Analítica</button>
+                    <button class="tab" onclick="showTab('thermal-numerical', this)">💻 Código Numérico</button>
+                </div>
+
+                <div id="thermal-analytical" class="tab-content active">
+                    <div class="formula">
+                        <h4>Desarrollo paso a paso:</h4>
+                        $$\int_{-0.05}^{0.05} x^2 \, dx = \left[\frac{x^3}{3}\right]_{-0.05}^{0.05} = \frac{(0.05)^3}{3} - \frac{(-0.05)^3}{3} \approx 8.33 \times 10^{-5}$$
+                        
+                        $$\iint_S (x^2 + y^2) \, dx \, dy = 2 \times 8.33 \times 10^{-5} \times 0.1 \approx 1.67 \times 10^{-5}$$
+                        
+                        $$Q = 8960 \times 385 \times 0.001 \times [0.6 - 100 \times 1.67 \times 10^{-5}] \approx 2068.79 \text{ J}$$
+                    </div>
+                </div>
+
+                <div id="thermal-numerical" class="tab-content">
+                    <div class="code-block">
+import scipy.integrate as integrate
+import numpy as np
+
+# Parámetros físicos
+rho = 8960      # Densidad del cobre (kg/m³)
+Cp = 385        # Calor específico del cobre (J/(kg·K))
+t = 0.001       # Espesor de la placa (m)
+T0 = 60         # Temperatura base (°C)
+a = 100         # Coeficiente para x² y y²
+
+def temperatura(x, y):
+    return T0 - a * x**2 - a * y**2
+
+# Integral doble sobre la superficie
+Q_integral, error = integrate.dblquad(
+    temperatura,
+    -0.05, 0.05,    # Límites en y
+    lambda y: -0.05, lambda y: 0.05  # Límites en x
+)
+
+Q = rho * Cp * t * Q_integral
+print(f"Energía térmica total: {Q:.2f} J")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2: Flujo de Paquetes -->
+        <div class="exercise-card">
+            <div class="card-header exercise-2">
+                <h2>📡 Ejercicio 2: Flujo de Paquetes en Red</h2>
+                <p>Análisis de flujo de datos en interconexiones de alta velocidad</p>
+            </div>
+            <div class="card-content">
+                <div class="section">
+                    <h3>📋 Contexto</h3>
+                    <p>Este ejercicio modela el flujo de paquetes de datos en una interconexión de red de 5 mm × 5 mm, representativa de un bus de datos en un router o chip de red. El análisis es crucial para identificar cuellos de botella y optimizar el rendimiento.</p>
+                    
+                    <div class="parameters">
+                        <h4>Parámetros del Sistema:</h4>
+                        <ul>
+                            <li><strong>Superficie:</strong> 5 mm × 5 mm</li>
+                            <li><strong>Coordenadas:</strong> x, y ∈ [0, 0.005] m</li>
+                            <li><strong>Constante K:</strong> 10⁶ paquetes/(s·m²)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🧮 Modelo Matemático</h3>
+                    <div class="formula">
+                        <p><strong>Densidad de flujo de paquetes:</strong></p>
+                        $$\vec{D}(x, y) = (Ky^2, Kx)$$
+                        
+                        <p><strong>Rotacional del campo:</strong></p>
+                        $$\nabla \times \vec{D} = \left(\frac{\partial D_y}{\partial x} - \frac{\partial D_x}{\partial y}\right)\hat{k} = (K - 2Ky)\hat{k}$$
+                        
+                        <p><strong>Flujo neto (Teorema de Stokes):</strong></p>
+                        $$\oint_C \vec{D} \cdot d\vec{r} = \iint_S (K - 2Ky) \, dx \, dy$$
+                    </div>
+                </div>
+
+                <div class="interactive-controls">
+                    <h4>🎛️ Controles Interactivos</h4>
+                    <div class="control-group">
+                        <label for="flow-k">Constante K (×10⁶):</label>
+                        <input type="number" id="flow-k" value="1" min="0.5" max="2" step="0.1">
+                    </div>
+                    <button class="update-btn" onclick="updateFlowPlot()">🔄 Actualizar Gráfico</button>
+                </div>
+
+                <div class="plot-container">
+                    <div class="plot-title">🌊 Campo de Flujo de Paquetes 3D</div>
+                    <div id="flow-plot" style="height: 500px;"></div>
+                </div>
+
+                <div class="calculation-result" id="flow-result">
+                    📊 Flujo neto de paquetes: 24.875 paquetes/s
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('flow-analytical', this)">📝 Solución Analítica</button>
+                    <button class="tab" onclick="showTab('flow-numerical', this)">💻 Código Numérico</button>
+                </div>
+
+                <div id="flow-analytical" class="tab-content active">
+                    <div class="formula">
+                        <h4>Desarrollo paso a paso:</h4>
+                        $$\iint_S (10^6 - 2 \times 10^6 y) \, dx \, dy = \int_0^{0.005} \int_0^{0.005} (10^6 - 2 \times 10^6 y) \, dy \, dx$$
+                        
+                        <p><strong>Integral interna:</strong></p>
+                        $$\int_0^{0.005} (10^6 - 2 \times 10^6 y) \, dy = 10^6 \times 0.005 - 10^6 \times (0.005)^2 = 4975$$
+                        
+                        <p><strong>Integral externa:</strong></p>
+                        $$4975 \times 0.005 = 24.875 \text{ paquetes/s}$$
+                    </div>
+                </div>
+
+                <div id="flow-numerical" class="tab-content">
+                    <div class="code-block">
+import scipy.integrate as integrate
+import numpy as np
+from sympy import symbols, diff, lambdify
+
+# Parámetros
+K = 1e6  # Constante de densidad de flujo
+x, y = symbols('x y')
+Dx = K * y**2  # Componente x
+Dy = K * x     # Componente y
+
+# Cálculo del rotacional
+curl = diff(Dy, x) - diff(Dx, y)  # ∂Dy/∂x - ∂Dx/∂y
+curl_func = lambdify((x, y), curl, 'numpy')
+
+# Integral de superficie
+circulacion, error = integrate.dblquad(
+    curl_func,
+    0, 0.005,     # Límites en y
+    lambda x: 0, lambda x: 0.005  # Límites en x
+)
+
+print(f"Flujo neto: {circulacion:.3f} paquetes/s")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentT0 = 60;
+        let currentA = 100;
+        let currentK = 1e6;
+
+        // Configuración de MathJax
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+
+        // Función para cambiar entre tabs
+        function showTab(tabId, buttonElement) {
+            // Ocultar todos los contenidos de tabs
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remover clase active de todos los botones
+            const buttons = buttonElement.parentElement.querySelectorAll('.tab');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // Mostrar el contenido seleccionado y activar el botón
+            document.getElementById(tabId).classList.add('active');
+            buttonElement.classList.add('active');
+        }
+
+        // Función para crear el gráfico térmico
+        function createThermalPlot(T0 = 60, a = 100) {
+            const size = 50;
+            const x = [];
+            const y = [];
+            const z = [];
+            
+            for (let i = 0; i < size; i++) {
+                const xi = -0.05 + (i / (size - 1)) * 0.1;
+                x.push(xi);
+            }
+            
+            for (let j = 0; j < size; j++) {
+                const yj = -0.05 + (j / (size - 1)) * 0.1;
+                y.push(yj);
+            }
+            
+            for (let j = 0; j < size; j++) {
+                const row = [];
+                for (let i = 0; i < size; i++) {
+                    const temp = T0 - a * x[i] * x[i] - a * y[j] * y[j];
+                    row.push(temp);
+                }
+                z.push(row);
+            }
+            
+            const data = [{
+                x: x,
+                y: y,
+                z: z,
+                type: 'surface',
+                colorscale: [
+                    [0, '#0d1b2a'],
+                    [0.2, '#415a77'],
+                    [0.4, '#778da9'],
+                    [0.6, '#e0e1dd'],
+                    [0.8, '#f25c54'],
+                    [1.0, '#d62828']
+                ],
+                contours: {
+                    z: {
+                        show: true,
+                        usecolormap: true,
+                        highlightcolor: "#42f462",
+                        project: {z: true}
+                    }
+                }
+            }];
+            
+            const layout = {
+                title: {
+                    text: 'Distribución de Temperatura T(x,y) = ' + T0 + ' - ' + a + 'x² - ' + a + 'y²',
+                    font: {size: 16}
+                },
+                scene: {
+                    xaxis: {title: 'x (m)'},
+                    yaxis: {title: 'y (m)'},
+                    zaxis: {title: 'Temperatura (°C)'},
+                    camera: {
+                        eye: {x: 1.2, y: 1.2, z: 0.6}
+                    }
+                },
+                autosize: true,
+                margin: {l: 0, r: 0, b: 0, t: 50}
+            };
+            
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['pan2d', 'lasso2d']
+            };
+            
+            Plotly.newPlot('thermal-plot', data, layout, config);
+            
+            // Calcular energía térmica
+            const rho = 8960, Cp = 385, t = 0.001;
+            const integral = 0.6 - a * 1.66666e-5;
+            const Q = rho * Cp * t * integral;
+            document.getElementById('thermal-result').innerHTML = 
+                `📏 Energía térmica total: ${Q.toFixed(2)} J`;
+        }
+
+        // Función para crear el gráfico de flujo
+        function createFlowPlot(K = 1e6) {
+            const size = 20;
+            const x = [];
+            const y = [];
+            const u = [];
+            const v = [];
+            const magnitude = [];
+            
+            for (let i = 0; i < size; i++) {
+                const xi = (i / (size - 1)) * 0.005;
+                x.push(xi);
+            }
+            
+            for (let j = 0; j < size; j++) {
+                const yj = (j / (size - 1)) * 0.005;
+                y.push(yj);
+            }
+            
+            for (let j = 0; j < size; j++) {
+                const uRow = [];
+                const vRow = [];
+                const magRow = [];
+                for (let i = 0; i < size; i++) {
+                    const ui = K * y[j] * y[j];
+                    const vi = K * x[i];
+                    const mag = Math.sqrt(ui * ui + vi * vi);
+                    uRow.push(ui);
+                    vRow.push(vi);
+                    magRow.push(mag);
+                }
+                u.push(uRow);
+                v.push(vRow);
+                magnitude.push(magRow);
+            }
+            
+            // Crear superficie de magnitud
+            const surfaceData = {
+                x: x,
+                y: y,
+                z: magnitude,
+                type: 'surface',
+                colorscale: 'Viridis',
+                opacity: 0.8,
+                name: 'Magnitud del flujo'
+            };
+            
+            // Crear campo vectorial
+            const vectorData = {
+                x: x.filter((_, i) => i % 3 === 0),
+                y: y.filter((_, i) => i % 3 === 0),
+                z: magnitude.filter((_, i) => i % 3 === 0).map(row => row.filter((_, j) => j % 3 === 0)),
+                u: u.filter((_, i) => i % 3 === 0).map(row => row.filter((_, j) => j % 3 === 0).map(val => val / K * 0.001)),
+                v: v.filter((_, i) => i % 3 === 0).map(row => row.filter((_, j) => j % 3 === 0).map(val => val / K * 0.001)),
+                w: magnitude.filter((_, i) => i % 3 === 0).map(row => row.filter((_, j) => j % 3 === 0).map(() => 0)),
+                type: 'cone',
+                colorscale: 'Blues',
+                sizemode: 'absolute',
+                sizeref: 0.0001,
+                name: 'Vectores de flujo'
+            };
+            
+            const data = [surfaceData, vectorData];
+            
+            const layout = {
+                title: {
+                    text: 'Campo de Flujo D⃗(x,y) = (K×y², K×x) con K = ' + (K/1e6).toFixed(1) + '×10⁶',
+                    font: {size: 16}
+                },
+                scene: {
+                    xaxis: {title: 'x (m)'},
+                    yaxis: {title: 'y (m)'},
+                    zaxis: {title: 'Magnitud (paquetes/s/m²)'},
+                    camera: {
+                        eye: {x: 1.5, y: 1.5, z: 0.8}
+                    }
+                },
+                autosize: true,
+                margin: {l: 0, r: 0, b: 0, t: 50}
+            };
+            
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['pan2d', 'lasso2d']
+            };
+            
+            Plotly.newPlot('flow-plot', data, layout, config);
+            
+            // Calcular flujo neto
+            const circulation = K * (0.005 * 0.005 - 0.005 * 0.005 * 0.005);
+            const netFlow = circulation * 0.005;
+            document.getElementById('flow-result').innerHTML = 
+                `📊 Flujo neto de paquetes: ${netFlow.toFixed(3)} paquetes/s`;
+        }
+
+        // Funciones para actualizar gráficos
+        function updateThermalPlot() {
+            const T0 = parseFloat(document.getElementById('temp-base').value);
+            const a = parseFloat(document.getElementById('coeff-a').value);
+            currentT0 = T0;
+            currentA = a;
+            createThermalPlot(T0, a);
+        }
+
+        function updateFlowPlot() {
+            const k = parseFloat(document.getElementById('flow-k').value) * 1e6;
+            currentK = k;
+            createFlowPlot(k);
+        }
+
+        // Inicializar gráficos cuando la página carga
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                createThermalPlot();
+                createFlowPlot();
+                // Renderizar MathJax
+                if (window.MathJax) {
+                    MathJax.typesetPromise();
+                }
+            }, 500);
+        });
+
+        // Hacer los gráficos responsivos
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize('thermal-plot');
+            Plotly.Plots.resize('flow-plot');
+        });
+    </script>
+</body>
+</html>
